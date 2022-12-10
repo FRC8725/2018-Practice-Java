@@ -11,7 +11,7 @@ public class RiseElevator extends CommandBase{
 
     public RiseElevator(Elevator elevator) {
         this.elevator = elevator;
-        setpoint = Constants.Elavator.upper;
+        setpoint = Constants.Elevator.upper;
 
         addRequirements(elevator);
     }

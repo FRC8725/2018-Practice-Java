@@ -16,7 +16,7 @@ public class EnableElevator extends CommandBase{
         this.elevator = elevator;
         this.toggleWinch = toggleWinch;
 
-        setpoint = Constants.Elavator.releaseWinchSetpoint;
+        setpoint = Constants.Elevator.releaseWinchSetpoint;
 
         addRequirements(elevator);
     }

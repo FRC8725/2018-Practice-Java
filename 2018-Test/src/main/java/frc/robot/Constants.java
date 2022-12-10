@@ -101,9 +101,9 @@ public final class Constants {
     }
 
 
-    public static final class Elavator {
-        public static final double winchEncoerPositionFactor = 1./75;
-        public static final double elevatorEncoerPositionFactor = 1./45;
+    public static final class Elevator {
+        public static final double winchEncoderPositionFactor = 1./75;
+        public static final double elevatorEncoderPositionFactor = 1./45;
 
         public static final double kpWinch = .1;
         public static final double kiWinch = .0;

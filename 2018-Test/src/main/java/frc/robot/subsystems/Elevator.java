@@ -9,7 +9,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 
 public class Elevator extends SubsystemBase{
@@ -32,11 +31,11 @@ public class Elevator extends SubsystemBase{
         winchMotor = new CANSparkMax(RobotMap.Elavator.winchMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         lowMotors = new MotorControllerGroup(lowleftMotor, lowrightMotor);
         winchEncoder = winchMotor.getEncoder();
-        winchEncoder.setPositionConversionFactor(Constants.Elavator.winchEncoerPositionFactor);
+        winchEncoder.setPositionConversionFactor(Constants.Elevator.winchEncoderPositionFactor);
         elevatorEncoder = lowleftMotor.getEncoder();
-        elevatorEncoder.setPositionConversionFactor(Constants.Elavator.elevatorEncoerPositionFactor);
-        winchPID = new PIDController(Constants.Elavator.kpWinch, Constants.Elavator.kiWinch, Constants.Elavator.kdWinch);
-        elevatorPID = new PIDController(Constants.Elavator.kpWinch, Constants.Elavator.kiElevator, Constants.Elavator.kdElevator);
+        elevatorEncoder.setPositionConversionFactor(Constants.Elevator.elevatorEncoderPositionFactor);
+        winchPID = new PIDController(Constants.Elevator.kpWinch, Constants.Elevator.kiWinch, Constants.Elevator.kdWinch);
+        elevatorPID = new PIDController(Constants.Elevator.kpElevator, Constants.Elevator.kiElevator, Constants.Elevator.kdElevator);
     }
 
     public void liftElavator(int outputVolts) {
