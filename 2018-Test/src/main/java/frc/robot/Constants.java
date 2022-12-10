@@ -103,11 +103,17 @@ public final class Constants {
 
     public static final class Elavator {
         public static final double winchEncoerPositionFactor = 1./75;
+        public static final double elevatorEncoerPositionFactor = 1./45;
 
         public static final double kpWinch = .1;
         public static final double kiWinch = .0;
         public static final double kdWinch = .0;
 
+        public static final double kpElevator = .5;
+        public static final double kiElevator = 0;
+        public static final double kdElevator = 0;
+
         public static final double releaseWinchSetpoint = .4;
+        public static final double upper = .5;
     }
 }

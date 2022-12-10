@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.DigitalOutput;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
 
@@ -21,11 +20,10 @@ public class Elevator extends SubsystemBase{
     public static Elevator getInstantce() {return INSTANCE;}
 
     private final CANSparkMax lowleftMotor, lowrightMotor, winchMotor;
-    private final RelativeEncoder winchEncoder;
+    private final RelativeEncoder winchEncoder, elevatorEncoder;
     private final MotorControllerGroup lowMotors;
-    private final DigitalOutput Limiter;
 
-    private final PIDController winchPID;
+    private final PIDController winchPID, elevatorPID;
     
     public Elevator(){
         lowleftMotor = new CANSparkMax(RobotMap.Elavator.lowleftMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -33,10 +31,12 @@ public class Elevator extends SubsystemBase{
         lowleftMotor.setInverted(true);
         winchMotor = new CANSparkMax(RobotMap.Elavator.winchMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         lowMotors = new MotorControllerGroup(lowleftMotor, lowrightMotor);
-        Limiter = new DigitalOutput(0);
         winchEncoder = winchMotor.getEncoder();
         winchEncoder.setPositionConversionFactor(Constants.Elavator.winchEncoerPositionFactor);
+        elevatorEncoder = lowleftMotor.getEncoder();
+        elevatorEncoder.setPositionConversionFactor(Constants.Elavator.elevatorEncoerPositionFactor);
         winchPID = new PIDController(Constants.Elavator.kpWinch, Constants.Elavator.kiWinch, Constants.Elavator.kdWinch);
+        elevatorPID = new PIDController(Constants.Elavator.kpWinch, Constants.Elavator.kiElevator, Constants.Elavator.kdElevator);
     }
 
     public void liftElavator(int outputVolts) {
@@ -47,23 +47,31 @@ public class Elevator extends SubsystemBase{
         winchMotor.setVoltage(outputVolts);
     }
 
-    public boolean getSwitch() {
-        return Limiter.get();
+    public void setElevator(int outputVolts) {
+        lowMotors.setVoltage(outputVolts);
     }
 
-    public double getWinchEncoder() {
-        return winchEncoder.getPosition();
-    }
-
-    public void zeroEncoder() {
+    public void zeroWinchEncoder() {
         winchEncoder.setPosition(0);
     }
 
-    public void setSetpoint(double setpoint) {
+    public void setWinchSetpoint(double setpoint) {
         winchPID.setSetpoint(setpoint);
     }
 
-    public double toSetpoint() {
-        return winchPID.calculate(winchEncoder.getPosition());
+    public void toWinchSetpoint() {
+        winchMotor.setVoltage(winchPID.calculate(winchEncoder.getPosition()));
+    }
+
+    public void zeroElevatorEncoder() {
+        elevatorEncoder.setPosition(0);
+    }
+
+    public void setElevatorSetpoint(double setpoint) {
+        elevatorPID.setSetpoint(setpoint);
+    }
+
+    public void toElevatorSetpoint() {
+        lowMotors.setVoltage(elevatorPID.calculate(elevatorEncoder.getPosition()));
     }
 }

@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.EnableElevator;
 import frc.robot.commands.RiseElevator;
 import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.Elevator;
@@ -27,10 +28,11 @@ public class RobotContainer {
 
     private final GamepadJoystick m_Joystick = new GamepadJoystick(0);
 
-    private final RiseElevator riseElevator = new RiseElevator(elevator, () -> m_Joystick.btn_topL.getAsBoolean());
+    private final EnableElevator enableWinch = new EnableElevator(elevator, () -> m_Joystick.btn_topL.getAsBoolean());
+    private final RiseElevator riseElevator = new RiseElevator(elevator);
 
     public RobotContainer() {
-        elevator.setDefaultCommand(riseElevator);
+        elevator.setDefaultCommand(enableWinch);
         m_swerveSubsystem.setDefaultCommand(new SwerveJoystickCmd(
                 m_swerveSubsystem,
                 m_Joystick::get_LStickX,
@@ -43,6 +45,7 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
       m_Joystick.btn_B.whenPressed(() -> m_swerveSubsystem.zeroHeading());
+      m_Joystick.btn_triggerL.toggleWhenPressed(riseElevator);
     } 
 
     public Command getAutonomousCommand() {
