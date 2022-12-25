@@ -15,38 +15,45 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.EnableElevator;
-import frc.robot.commands.RiseElevator;
-import frc.robot.commands.SwerveJoystickCmd;
+import frc.robot.commands.*;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Gripper;
+import frc.robot.subsystems.Paneumatics;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class RobotContainer {
 
     private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem();
     private final Elevator elevator = Elevator.getInstantce();
+    private final Gripper gripper = Gripper.getInstance();
+    private final Paneumatics paneumatics = Paneumatics.getInstance();
 
     private final GamepadJoystick m_Joystick = new GamepadJoystick(0);
 
-    private final EnableElevator enableWinch = new EnableElevator(elevator, () -> m_Joystick.btn_topL.getAsBoolean());
-    private final RiseElevator riseElevator = new RiseElevator(elevator);
-
     public RobotContainer() {
-        elevator.setDefaultCommand(enableWinch);
         m_swerveSubsystem.setDefaultCommand(new SwerveJoystickCmd(
                 m_swerveSubsystem,
                 m_Joystick::get_LStickX,
                 m_Joystick::get_LStickY,
                 m_Joystick::get_RStickX,
                 () -> !m_Joystick.btn_A.getAsBoolean()));
-
+        elevator.setDefaultCommand(new ElevatorWithJoystick(
+                elevator,
+                m_Joystick.POV_North::getAsBoolean,
+                m_Joystick.POV_South::getAsBoolean));
         configureButtonBindings();
     }
 
     private void configureButtonBindings() {
-      m_Joystick.btn_B.whenPressed(() -> m_swerveSubsystem.zeroHeading());
-      m_Joystick.btn_triggerL.toggleWhenPressed(riseElevator);
-    } 
+      m_Joystick.btn_X.whenPressed(() -> m_swerveSubsystem.zeroHeading());
+      m_Joystick.btn_topR.whileHeld(() -> new RunGripper(gripper, false));
+      m_Joystick.btn_triggerR.whileHeld(() -> new RunGripper(gripper, true));
+      m_Joystick.btn_Y.whenPressed(() -> new RunGripperToPosition(gripper, 0));
+      m_Joystick.btn_topL.whenPressed(() -> new RunGripperToPosition(gripper, .125));
+      m_Joystick.btn_triggerL.whenPressed(() -> new RunGripperToPosition(gripper, .361));
+      m_Joystick.btn_A.whenPressed(() -> new ReleaseTexi(paneumatics));
+      m_Joystick.btn_B.whenPressed(() -> new ReleaseClimber(paneumatics));
+    }
 
     public Command getAutonomousCommand() {
         // 1. Create trajectory settings

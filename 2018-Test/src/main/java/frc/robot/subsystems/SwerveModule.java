@@ -1,24 +1,25 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.sensors.CANCoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
+import frc.lib.LazyTalonFX;
 
 public class SwerveModule {
 
-    private final CANSparkMax driveMotor;
-    private final CANSparkMax turningMotor;
+//    private final CANSparkMax driveMotor;
+    private final LazyTalonFX driveMotor, turningMotor;
+//    private final CANSparkMax driveMotor;
+//    private final CANSparkMax turningMotor;
 
-    private final RelativeEncoder driveEncoder;
-    private final RelativeEncoder turningEncoder;
+//    private final RelativeEncoder driveEncoder;
+//    private final RelativeEncoder turningEncoder;
 
     private final PIDController turningPidController;
 
@@ -35,55 +36,65 @@ public class SwerveModule {
 
         absoluteEncoder.setPositionToAbsolute();
 
-        driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
-        turningMotor = new CANSparkMax(turningMotorId, MotorType.kBrushless);
+        driveMotor = new LazyTalonFX(driveMotorId);
+        configDriveMotor();
 
-        driveMotor.setIdleMode(IdleMode.kBrake);
-        turningMotor.setIdleMode(IdleMode.kBrake);
+        turningMotor = new LazyTalonFX(turningMotorId);
+        configTurningMotor();
 
-        driveMotor.setInverted(driveMotorReversed);
-        turningMotor.setInverted(turningMotorReversed);
+//        driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
+//        turningMotor = new CANSparkMax(turningMotorId, MotorType.kBrushless);
 
-        driveEncoder = driveMotor.getEncoder();
-        turningEncoder = turningMotor.getEncoder();
+//        driveMotor.setIdleMode(IdleMode.kBrake);
+//        turningMotor.setIdleMode(IdleMode.kBrake);
 
-        driveEncoder.setPositionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter);
-        driveEncoder.setVelocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec);
-        turningEncoder.setPositionConversionFactor(ModuleConstants.kTurningEncoderRot2Rad);
-        turningEncoder.setVelocityConversionFactor(ModuleConstants.kTurningEncoderRPM2RadPerSec);
+        // turning Motor configuration
 
-
-        turningPidController = new PIDController(ModuleConstants.kPTurning, ModuleConstants.kITurning, ModuleConstants.kDturning);
+        turningPidController = new PIDController(ModuleConstants.kPTurning, ModuleConstants.kITurning, ModuleConstants.kDTurning);
         turningPidController.enableContinuousInput(-Math.PI, Math.PI);
         resetEncoders();
         putDashboard();
     }
 
+    private void configDriveMotor() {
+        driveMotor.setNeutralMode(NeutralMode.Brake);
+        driveMotor.gearRatio = ModuleConstants.kDriveMotorGearRatio;
+    }
+
+    private void configTurningMotor() {
+        turningMotor.setNeutralMode(NeutralMode.Coast);
+        turningMotor.config_kP(0, ModuleConstants.kPTurning);
+        turningMotor.config_kI(0, ModuleConstants.kITurning);
+        turningMotor.config_kD(0, ModuleConstants.kDTurning);
+        turningMotor.gearRatio = ModuleConstants.kTurningMotorGearRatio;
+    }
     public double getDrivePosition() {
-        return driveEncoder.getPosition();
+        return driveMotor.getPositionAsDegrees();
     }
 
     public double getTurningPosition() {
-        return turningEncoder.getPosition();
+        return turningMotor.getPositionAsDegrees();
     }
 
     public double getDriveVelocity() {
-        return driveEncoder.getVelocity();
+        return driveMotor.getSelectedSensorVelocity();
     }
 
     public double getTurningVelocity() {
-        return turningEncoder.getVelocity();
+            return turningMotor.getSelectedSensorVelocity();
     }
 
-    public double getAbsoluteEncoderRad() {
+    public double getAbsoluteEncoderAngle() {
         double angle = (absoluteEncoder.getAbsolutePosition() - absoluteEncoderOffsetRad) / 360.;
         angle *= 2.0 * Math.PI;
         return angle * (absoluteEncoderReversed ? -1.0 : 1.0);
     }
 
     public void resetEncoders() {
-        driveEncoder.setPosition(0);
-        turningEncoder.setPosition(getAbsoluteEncoderRad());
+        turningMotor.setAnglePosition(getAbsoluteEncoderAngle());
+        driveMotor.setSelectedSensorPosition(0);
+//        driveEncoder.setPosition(0);
+//        turningEncoder.setPosition(getAbsoluteEncoderRad());
     }
 
     public SwerveModuleState getState() {
@@ -96,8 +107,8 @@ public class SwerveModule {
             return;
         }
         state = SwerveModuleState.optimize(state, getState().angle);
-        driveMotor.set(state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
-        turningMotor.set(turningPidController.calculate(getTurningPosition(), state.angle.getRadians()));
+        driveMotor.set(ControlMode.Velocity, state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
+        turningMotor.set(ControlMode.Velocity, turningPidController.calculate(getTurningPosition(), state.angle.getRadians()));
         SmartDashboard.putString("Swerve[" + absoluteEncoder.getDeviceID() + "] state", state.toString());
         putDashboard();
     }
@@ -109,20 +120,21 @@ public class SwerveModule {
     }
     
     public void ResetTurningMotor() {
-        if (Math.abs(turningEncoder.getPosition()) < 0.1) {
+        if (Math.abs(turningMotor.getSelectedSensorPosition()) < 0.1){
             stop();
             return;
         }
-        turningMotor.set(turningPidController.calculate(turningEncoder.getPosition(), 0));
+        turningMotor.set(ControlMode.Position, 0);
+//        turningMotor.set(turningPidController.calculate(turningEncoder.getPosition(), 0));
         driveMotor.set(.0);
         putDashboard();
     }
     
     
     public void putDashboard () {
-        SmartDashboard.putNumber("ABS angle " + absoluteEncoder.getDeviceID(), getAbsoluteEncoderRad());
+        SmartDashboard.putNumber("ABS angle " + absoluteEncoder.getDeviceID(), getAbsoluteEncoderAngle());
         SmartDashboard.putNumber("Abs Position " + absoluteEncoder.getDeviceID(), absoluteEncoder.getAbsolutePosition());
-        SmartDashboard.putNumber("Position " + absoluteEncoder.getDeviceID(), absoluteEncoder.getPosition());
-        SmartDashboard.putNumber("Turing position " + turningMotor.getDeviceId(), turningEncoder.getPosition());
+       // SmartDashboard.putNumber("Position " + absoluteEncoder.getDeviceID(), absoluteEncoder.getPosition());
+       // SmartDashboard.putNumber("Turing position " + turningMotor.getDeviceId(), turningEncoder.getPosition());
     }
 }

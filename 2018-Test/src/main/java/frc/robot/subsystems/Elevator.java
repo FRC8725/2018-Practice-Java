@@ -18,59 +18,46 @@ public class Elevator extends SubsystemBase{
     @SuppressWarnings("WeakerAccess")
     public static Elevator getInstantce() {return INSTANCE;}
 
-    private final CANSparkMax lowleftMotor, lowrightMotor, winchMotor;
-    private final RelativeEncoder winchEncoder, elevatorEncoder;
+    private final CANSparkMax lowleftMotor, lowrightMotor;
+    private final RelativeEncoder elevatorEncoder;
     private final MotorControllerGroup lowMotors;
 
-    private final PIDController winchPID, elevatorPID;
-    
+    private final PIDController elevatorPID;
+
     public Elevator(){
         lowleftMotor = new CANSparkMax(RobotMap.Elavator.lowleftMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         lowrightMotor = new CANSparkMax(RobotMap.Elavator.lowrightMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         lowleftMotor.setInverted(true);
-        winchMotor = new CANSparkMax(RobotMap.Elavator.winchMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         lowMotors = new MotorControllerGroup(lowleftMotor, lowrightMotor);
-        winchEncoder = winchMotor.getEncoder();
-        winchEncoder.setPositionConversionFactor(Constants.Elevator.winchEncoderPositionFactor);
         elevatorEncoder = lowleftMotor.getEncoder();
         elevatorEncoder.setPositionConversionFactor(Constants.Elevator.elevatorEncoderPositionFactor);
-        winchPID = new PIDController(Constants.Elevator.kpWinch, Constants.Elevator.kiWinch, Constants.Elevator.kdWinch);
+        zeroElevatorEncoder();
         elevatorPID = new PIDController(Constants.Elevator.kpElevator, Constants.Elevator.kiElevator, Constants.Elevator.kdElevator);
     }
-
-    public void liftElavator(int outputVolts) {
-        lowMotors.setVoltage(outputVolts);
-    }
-
-    public void setWinch(int outputVolts) {
-        winchMotor.setVoltage(outputVolts);
-    }
-
-    public void setElevator(int outputVolts) {
-        lowMotors.setVoltage(outputVolts);
-    }
-
-    public void zeroWinchEncoder() {
-        winchEncoder.setPosition(0);
-    }
-
-    public void setWinchSetpoint(double setpoint) {
-        winchPID.setSetpoint(setpoint);
-    }
-
-    public void toWinchSetpoint() {
-        winchMotor.setVoltage(winchPID.calculate(winchEncoder.getPosition()));
+    @Override
+    public void periodic() {
+        double voltage = elevatorPID.calculate(elevatorEncoder.getPosition());
+        lowMotors.setVoltage(voltage);
     }
 
     public void zeroElevatorEncoder() {
         elevatorEncoder.setPosition(0);
     }
 
+    public double getSetpoint() {
+        return elevatorPID.getSetpoint();
+    }
+
     public void setElevatorSetpoint(double setpoint) {
         elevatorPID.setSetpoint(setpoint);
     }
 
-    public void toElevatorSetpoint() {
-        lowMotors.setVoltage(elevatorPID.calculate(elevatorEncoder.getPosition()));
+    public void stopElevator() {
+        lowMotors.set(0);
+        elevatorPID.setSetpoint(elevatorEncoder.getPosition());
+    }
+
+    public boolean atSetpoint() {
+        return elevatorPID.atSetpoint();
     }
 }

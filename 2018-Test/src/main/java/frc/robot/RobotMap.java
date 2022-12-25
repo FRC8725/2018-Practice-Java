@@ -25,4 +25,16 @@ public class RobotMap {
         public static final int lowrightMotor = 14;
         public static final int winchMotor = 15;
     }
+
+    public static final class Gripper {
+        public static final int leftSpinMotor = 16;
+        public static final int rightSpinMotor = 17;
+        public static final int angleMotor = 18;
+    }
+
+    public static final class Pneumatics {
+        public static final int[] leftForklift = {0, 1};
+        public static final int[] rightForklift = {2, 3};
+        public static final int[] climber = {4, 5};
+    }
 }

@@ -35,7 +35,7 @@ public final class Constants {
         public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
         public static final double kPTurning = 0.1;
         public static final double kITurning = 0;
-        public static final double kDturning = 0;
+        public static final double kDTurning = 0;
     }
 
     public static final class DriveConstants {
@@ -102,8 +102,8 @@ public final class Constants {
 
 
     public static final class Elevator {
-        public static final double winchEncoderPositionFactor = 1./75;
-        public static final double elevatorEncoderPositionFactor = 1./45;
+        public static final double winchEncoderPositionFactor = 1./45;
+        public static final double elevatorEncoderPositionFactor = 1./30;
 
         public static final double kpWinch = .1;
         public static final double kiWinch = .0;
@@ -115,5 +115,10 @@ public final class Constants {
 
         public static final double releaseWinchSetpoint = .4;
         public static final double upper = .5;
+    }
+    public static final class Gripper {
+        public static final double angleMotorGearRatio = 1/45.;
+        public static final double kpAngle = 1.5;
+        public static final double spinnerSpeed = .5;
     }
 }

@@ -28,7 +28,7 @@
 *.lai
 *.la
 *.a
-*.lib
+*.frc.lib
 
 # Executables
 *.exe
