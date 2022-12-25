@@ -7,7 +7,7 @@ public class LazyTalonFX extends WPI_TalonFX {
     public double gearRatio = 0;
     public LazyTalonFX(int deviceNumber, int... configuration) {
         super(deviceNumber);
-        gearRatio = configuration[0];
+        if (configuration.length > 0) gearRatio = configuration[0];
     }
     TalonFXConfiguration turningMotorConfig;
 
