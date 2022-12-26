@@ -64,13 +64,25 @@
     },
     "windows": {
       "/SmartDashboard/Field": {
-        "traj": {
-          "arrowSize": 0,
-          "style": "Line (Closed)",
-          "weight": 1.0
+        "Robot": {
+          "arrowSize": 63
         },
-        "window": {
-          "visible": true
+        "traj": {
+          "arrowColor": [
+            255.0,
+            195.0,
+            0.0,
+            255.0
+          ],
+          "arrowSize": 34,
+          "length": 0.800000011920929,
+          "style": "Box/Image",
+          "weight": 1.0,
+          "width": 0.6000000238418579
+        },
+        "trej": {
+          "arrowSize": 29,
+          "style": "Line"
         }
       }
     }
