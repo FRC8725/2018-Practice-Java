@@ -1,11 +1,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.commands.*;
-import frc.robot.commands.Auto.GoZShape;
-import frc.robot.commands.Auto.Slalom;
+import frc.robot.commands.auto.GoStraightAndSpin;
+import frc.robot.commands.auto.GoZShape;
+import frc.robot.commands.auto.Slalom;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.Paneumatics;
@@ -21,7 +23,9 @@ public class RobotContainer {
 
     private final GamepadJoystick m_Joystick = new GamepadJoystick(0);
 
+    // SmartDashboard
     private final Field2d m_field = new Field2d();
+    private final SendableChooser<Command> autoCommand;
 
 
     public RobotContainer() {
@@ -36,6 +40,11 @@ public class RobotContainer {
                 m_Joystick.POV_North::getAsBoolean,
                 m_Joystick.POV_South::getAsBoolean));
         configureButtonBindings();
+        autoCommand = new SendableChooser<>();
+        autoCommand.addOption("Nothing", new InstantCommand(m_swerveSubsystem::stopModules));
+        autoCommand.addOption("GoStraightAndSpin", new GoStraightAndSpin(m_swerveSubsystem));
+        autoCommand.addOption("GoZShape", new GoZShape(m_swerveSubsystem));
+        autoCommand.addOption("Slalom", new Slalom(m_swerveSubsystem));
     }
 
     private void configureButtonBindings() {
@@ -51,14 +60,6 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         SmartDashboard.putData(m_field);
-        String autoCommand = "GoZShape";
-        switch(autoCommand) {
-            case "GoZShape":
-                return new GoZShape(m_swerveSubsystem);
-            case "Slalom":
-                return new Slalom(m_swerveSubsystem);
-            default:
-                return new InstantCommand(() -> m_swerveSubsystem.stopModules());
-        }
+        return autoCommand.getSelected();
     }
 }

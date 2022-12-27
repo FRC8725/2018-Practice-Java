@@ -1,32 +1,30 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.LazySparkMax;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
-
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
 
 public class Elevator extends SubsystemBase{
-
     private static final Elevator INSTANCE = new Elevator();
 
     @SuppressWarnings("WeakerAccess")
     public static Elevator getInstantce() {return INSTANCE;}
 
-    private final CANSparkMax lowleftMotor, lowrightMotor;
+    private final LazySparkMax lowleftMotor, lowrightMotor;
     private final RelativeEncoder elevatorEncoder;
     private final MotorControllerGroup lowMotors;
 
     private final PIDController elevatorPID;
 
     public Elevator(){
-        lowleftMotor = new CANSparkMax(RobotMap.Elavator.lowleftMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
-        lowrightMotor = new CANSparkMax(RobotMap.Elavator.lowrightMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        lowleftMotor = new LazySparkMax(RobotMap.Elavator.lowleftMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        lowrightMotor = new LazySparkMax(RobotMap.Elavator.lowrightMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         lowleftMotor.setInverted(true);
         lowMotors = new MotorControllerGroup(lowleftMotor, lowrightMotor);
         elevatorEncoder = lowleftMotor.getEncoder();

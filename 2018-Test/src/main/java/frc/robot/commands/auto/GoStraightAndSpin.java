@@ -1,10 +1,9 @@
-package frc.robot.commands.Auto;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -20,9 +19,9 @@ import frc.robot.subsystems.SwerveSubsystem;
 import java.util.List;
 
 
-public class GoZShape extends SequentialCommandGroup {
+public class GoStraightAndSpin extends SequentialCommandGroup {
 
-    public GoZShape(SwerveSubsystem m_swerveSubsystem) {
+    public GoStraightAndSpin(SwerveSubsystem m_swerveSubsystem) {
 
         Field2d m_field = new Field2d();
 
@@ -40,10 +39,8 @@ public class GoZShape extends SequentialCommandGroup {
         Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
                 new Pose2d(0, 0, new Rotation2d(0)),
                 List.of(
-                        new Translation2d(1, 0),
-                        new Translation2d(1, -1)
                 ),
-                new Pose2d(2, 1, Rotation2d.fromDegrees(180)),
+                new Pose2d(0, 1, Rotation2d.fromDegrees(180)),
                 trajectoryConfig
         );
 

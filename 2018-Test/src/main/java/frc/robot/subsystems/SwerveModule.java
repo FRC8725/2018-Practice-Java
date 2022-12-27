@@ -36,10 +36,10 @@ public class SwerveModule {
 
         absoluteEncoder.setPositionToAbsolute();
 
-        driveMotor = new LazyTalonFX(driveMotorId);
+        driveMotor = new LazyTalonFX(driveMotorId, true);
         configDriveMotor();
 
-        turningMotor = new LazyTalonFX(turningMotorId);
+        turningMotor = new LazyTalonFX(turningMotorId, true);
         configTurningMotor();
 
 //        driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
