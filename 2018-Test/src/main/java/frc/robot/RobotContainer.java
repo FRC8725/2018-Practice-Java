@@ -45,6 +45,7 @@ public class RobotContainer {
         autoCommand.addOption("GoStraightAndSpin", new GoStraightAndSpin(m_swerveSubsystem));
         autoCommand.addOption("GoZShape", new GoZShape(m_swerveSubsystem));
         autoCommand.addOption("Slalom", new Slalom(m_swerveSubsystem));
+        SmartDashboard.putData(autoCommand);
     }
 
     private void configureButtonBindings() {
