@@ -69,12 +69,13 @@ public final class Constants {
         public static final boolean kFrontRightDriveAbsoluteEncoderReversed = false;
         public static final boolean kBackRightDriveAbsoluteEncoderReversed = false;
         
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 174.2;
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 302.25;   
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 307.88;
-        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 215.771484375;    
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetAngle = 174.2;
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetAngle = 302.25;
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetAngle = 307.88;
+        public static final double kBackRightDriveAbsoluteEncoderOffsetAngle = 215.771484375;
 
-        public static final double kPhysicalMaxSpeedMetersPerSecond = Units.feetToMeters(12);
+        public static final double kPhysicalMaxSpeedMetersPerSecond = Units.feetToMeters(13.5);
+        // Neo: 12; Falcon: 13.5
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
 
         public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 2;

@@ -34,10 +34,9 @@ public class Slalom extends SequentialCommandGroup {
             PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
             ProfiledPIDController thetaController = new ProfiledPIDController(
                     AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-            thetaController.enableContinuousInput(-Math.PI, Math.PI);
+            thetaController.enableContinuousInput(-180, 180);
 
             // 4. Construct command to follow trajectory
-            trajectory.sample(4);
             SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
                     trajectory,
                     m_swerveSubsystem::getPose,

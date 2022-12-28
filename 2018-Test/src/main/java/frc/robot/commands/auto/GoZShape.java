@@ -30,7 +30,7 @@ public class GoZShape extends SequentialCommandGroup {
         PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
         ProfiledPIDController thetaController = new ProfiledPIDController(
                 AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+        thetaController.enableContinuousInput(-180, 180);
 
         TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
                 AutoConstants.kMaxSpeedMetersPerSecond,
@@ -43,11 +43,10 @@ public class GoZShape extends SequentialCommandGroup {
                         new Translation2d(1, 0),
                         new Translation2d(1, -1)
                 ),
-                new Pose2d(2, 1, Rotation2d.fromDegrees(180)),
+                new Pose2d(2, -1, Rotation2d.fromDegrees(180)),
                 trajectoryConfig
         );
 
-        trajectory.sample(4);
         m_field.getObject("trej").setTrajectory(trajectory);
         SmartDashboard.putData(m_field);
         SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(

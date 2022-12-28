@@ -4,6 +4,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -29,7 +30,7 @@ public class GoStraightAndSpin extends SequentialCommandGroup {
         PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
         ProfiledPIDController thetaController = new ProfiledPIDController(
                 AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+        thetaController.enableContinuousInput(-180, 180);
 
         TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
                 AutoConstants.kMaxSpeedMetersPerSecond,
@@ -40,11 +41,10 @@ public class GoStraightAndSpin extends SequentialCommandGroup {
                 new Pose2d(0, 0, new Rotation2d(0)),
                 List.of(
                 ),
-                new Pose2d(0, 1, Rotation2d.fromDegrees(180)),
+                new Pose2d(-2, 0, Rotation2d.fromDegrees(0)),
                 trajectoryConfig
         );
 
-        trajectory.sample(4);
         m_field.getObject("trej").setTrajectory(trajectory);
         SmartDashboard.putData(m_field);
         SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
