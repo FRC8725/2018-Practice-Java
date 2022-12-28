@@ -16,9 +16,9 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class RobotContainer {
 
     private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem();
-    private final Elevator elevator = Elevator.getInstantce();
-    private final Gripper gripper = Gripper.getInstance();
-    private final Paneumatics paneumatics = Paneumatics.getInstance();
+     private final Elevator elevator = Elevator.getInstantce();
+     private final Gripper gripper = Gripper.getInstance();
+     private final Paneumatics paneumatics = Paneumatics.getInstance();
 
 
     private final GamepadJoystick m_Joystick = new GamepadJoystick(0);
@@ -35,10 +35,10 @@ public class RobotContainer {
                 m_Joystick::get_LStickY,
                 m_Joystick::get_RStickX,
                 () -> !m_Joystick.btn_A.getAsBoolean()));
-        elevator.setDefaultCommand(new ElevatorWithJoystick(
-                elevator,
-                m_Joystick.POV_North::getAsBoolean,
-                m_Joystick.POV_South::getAsBoolean));
+         elevator.setDefaultCommand(new ElevatorWithJoystick(
+                 elevator,
+                 m_Joystick.POV_North::getAsBoolean,
+                 m_Joystick.POV_South::getAsBoolean));
         configureButtonBindings();
         autoCommand = new SendableChooser<>();
         autoCommand.addOption("Nothing", new InstantCommand(m_swerveSubsystem::stopModules));
@@ -50,13 +50,13 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
       m_Joystick.btn_X.whenPressed(m_swerveSubsystem::zeroHeading);
-      m_Joystick.btn_topR.whileHeld(() -> new RunGripper(gripper, false));
-      m_Joystick.btn_triggerR.whileHeld(() -> new RunGripper(gripper, true));
-      m_Joystick.btn_Y.whenPressed(() -> new RunGripperToPosition(gripper, 0));
-      m_Joystick.btn_topL.whenPressed(() -> new RunGripperToPosition(gripper, .125));
-      m_Joystick.btn_triggerL.whenPressed(() -> new RunGripperToPosition(gripper, .361));
-      m_Joystick.btn_A.whenPressed(() -> new ReleaseTexi(paneumatics));
-      m_Joystick.btn_B.whenPressed(() -> new ReleaseClimber(paneumatics));
+       m_Joystick.btn_topR.whileHeld(() -> new RunGripper(gripper, false));
+       m_Joystick.btn_triggerR.whileHeld(() -> new RunGripper(gripper, true));
+       m_Joystick.btn_Y.whenPressed(() -> new RunGripperToPosition(gripper, 0));
+       m_Joystick.btn_topL.whenPressed(() -> new RunGripperToPosition(gripper, .125));
+       m_Joystick.btn_triggerL.whenPressed(() -> new RunGripperToPosition(gripper, .361));
+       m_Joystick.btn_A.whenPressed(() -> new ReleaseTexi(paneumatics));
+       m_Joystick.btn_B.whenPressed(() -> new ReleaseClimber(paneumatics));
     }
 
     public Command getAutonomousCommand() {

@@ -39,7 +39,7 @@ public class SwerveModule {
         driveMotor = new LazyTalonFX(driveMotorId, true);
         configDriveMotor();
 
-        turningMotor = new LazyTalonFX(turningMotorId, true);
+        turningMotor = new LazyTalonFX(turningMotorId, false);
         configTurningMotor();
 
 //        driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
@@ -107,8 +107,8 @@ public class SwerveModule {
             return;
         }
         state = SwerveModuleState.optimize(state, getState().angle);
-        driveMotor.set(ControlMode.Velocity, state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
-        turningMotor.set(ControlMode.Velocity, turningPidController.calculate(getTurningPosition(), state.angle.getRadians()));
+        driveMotor.set(ControlMode.PercentOutput, state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
+        turningMotor.set(ControlMode.PercentOutput, turningPidController.calculate(getTurningPosition(), state.angle.getDegrees()));
         SmartDashboard.putString("Swerve[" + absoluteEncoder.getDeviceID() + "] state", state.toString());
         putDashboard();
     }
