@@ -37,12 +37,12 @@ public class GamepadJoystick extends Joystick {
         return getRawAxis(0);
     }
     public double get_LStickY(){
-        return getRawAxis(1);
+        return -getRawAxis(1);
     }
     public double get_RStickX(){
         return getRawAxis(2);
     }
     public double get_RStickY(){
-        return getRawAxis(3);
+        return -getRawAxis(3);
     }
 }

@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.SensorInitializationStrategy;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -25,21 +27,22 @@ public class SwerveModule {
 
     private final CANCoder absoluteEncoder;
     private final boolean absoluteEncoderReversed;
-    private final double absoluteEncoderOffsetRad;
+    private final double absoluteEncoderOffsetAngle;
 
     public SwerveModule(int driveMotorId, int turningMotorId, boolean driveMotorReversed, boolean turningMotorReversed,
             int absoluteEncoderId, double absoluteEncoderOffset, boolean absoluteEncoderReversed) {
 
-        this.absoluteEncoderOffsetRad = absoluteEncoderOffset;
+        this.absoluteEncoderOffsetAngle = absoluteEncoderOffset;
         this.absoluteEncoderReversed = absoluteEncoderReversed;
         absoluteEncoder = new CANCoder(absoluteEncoderId);
 
+        absoluteEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
         absoluteEncoder.setPositionToAbsolute();
 
         driveMotor = new LazyTalonFX(driveMotorId, true);
         configDriveMotor();
 
-        turningMotor = new LazyTalonFX(turningMotorId, true);
+        turningMotor = new LazyTalonFX(turningMotorId, false);
         configTurningMotor();
 
 //        driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
@@ -51,7 +54,7 @@ public class SwerveModule {
         // turning Motor configuration
 
         turningPidController = new PIDController(ModuleConstants.kPTurning, ModuleConstants.kITurning, ModuleConstants.kDTurning);
-        turningPidController.enableContinuousInput(-Math.PI, Math.PI);
+        turningPidController.enableContinuousInput(-180, 180);
         resetEncoders();
         putDashboard();
     }
@@ -81,18 +84,16 @@ public class SwerveModule {
     }
 
     public double getTurningVelocity() {
-            return turningMotor.getSelectedSensorVelocity();
+        return turningMotor.getSelectedSensorVelocity();
     }
 
     public double getAbsoluteEncoderAngle() {
-        double angle = (absoluteEncoder.getAbsolutePosition() - absoluteEncoderOffsetRad) / 360.;
-        angle *= 2.0 * Math.PI;
+        double angle = (absoluteEncoder.getAbsolutePosition() - absoluteEncoderOffsetAngle);
         return angle * (absoluteEncoderReversed ? -1.0 : 1.0);
     }
 
     public void resetEncoders() {
         turningMotor.setAnglePosition(getAbsoluteEncoderAngle());
-        driveMotor.setSelectedSensorPosition(0);
 //        driveEncoder.setPosition(0);
 //        turningEncoder.setPosition(getAbsoluteEncoderRad());
     }
@@ -107,8 +108,8 @@ public class SwerveModule {
             return;
         }
         state = SwerveModuleState.optimize(state, getState().angle);
-        driveMotor.set(ControlMode.Velocity, state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
-        turningMotor.set(ControlMode.Velocity, turningPidController.calculate(getTurningPosition(), state.angle.getRadians()));
+        driveMotor.set(ControlMode.PercentOutput, state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
+        turningMotor.set(ControlMode.PercentOutput, turningPidController.calculate(getTurningPosition(), state.angle.getDegrees()));
         SmartDashboard.putString("Swerve[" + absoluteEncoder.getDeviceID() + "] state", state.toString());
         putDashboard();
     }
@@ -124,8 +125,8 @@ public class SwerveModule {
             stop();
             return;
         }
-        turningMotor.set(ControlMode.Position, 0);
-//        turningMotor.set(turningPidController.calculate(turningEncoder.getPosition(), 0));
+        // turningMotor.set(ControlMode.Position, 0);
+        turningMotor.set(ControlMode.PercentOutput, turningPidController.calculate(getTurningPosition(), 0));
         driveMotor.set(.0);
         putDashboard();
     }
@@ -135,6 +136,6 @@ public class SwerveModule {
         SmartDashboard.putNumber("ABS angle " + absoluteEncoder.getDeviceID(), getAbsoluteEncoderAngle());
         SmartDashboard.putNumber("Abs Position " + absoluteEncoder.getDeviceID(), absoluteEncoder.getAbsolutePosition());
        // SmartDashboard.putNumber("Position " + absoluteEncoder.getDeviceID(), absoluteEncoder.getPosition());
-       // SmartDashboard.putNumber("Turing position " + turningMotor.getDeviceId(), turningEncoder.getPosition());
+       SmartDashboard.putNumber("Turing position " + turningMotor.getDeviceID(), turningMotor.getPositionAsDegrees());
     }
 }
