@@ -49,14 +49,13 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-      m_Joystick.btn_X.whenPressed(m_swerveSubsystem::zeroHeading);
+       m_Joystick.btn_X.whenPressed(m_swerveSubsystem::zeroHeading);
        m_Joystick.btn_topR.whileHeld(() -> new RunGripper(gripper, false));
        m_Joystick.btn_triggerR.whileHeld(() -> new RunGripper(gripper, true));
        m_Joystick.btn_Y.whenPressed(() -> new RunGripperToPosition(gripper, 0));
        m_Joystick.btn_topL.whenPressed(() -> new RunGripperToPosition(gripper, .125));
        m_Joystick.btn_triggerL.whenPressed(() -> new RunGripperToPosition(gripper, .361));
        m_Joystick.btn_A.whenPressed(() -> new ReleaseTexi(paneumatics));
-       m_Joystick.btn_B.whenPressed(() -> new ReleaseClimber(paneumatics));
     }
 
     public Command getAutonomousCommand() {

@@ -45,10 +45,10 @@ public final class Constants {
         public static final double kWheelBase = 0.58;
         // Distance between front and back wheels
         public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-                new Translation2d(kWheelBase / 2, kTrackWidth / 2),
                 new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-                new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-                new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+                new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+                new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
+                new Translation2d(-kWheelBase / 2, kTrackWidth / 2));
 
 
 
@@ -69,18 +69,18 @@ public final class Constants {
         public static final boolean kFrontRightDriveAbsoluteEncoderReversed = false;
         public static final boolean kBackRightDriveAbsoluteEncoderReversed = false;
         
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetAngle = 174.2;
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetAngle = 302.25;
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetAngle = 307.88;
-        public static final double kBackRightDriveAbsoluteEncoderOffsetAngle = 215.771484375;
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetAngle = -4.08;
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetAngle = -59.68;
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetAngle = 134.736328125;
+        public static final double kBackRightDriveAbsoluteEncoderOffsetAngle = 30.849;
 
         public static final double kPhysicalMaxSpeedMetersPerSecond = Units.feetToMeters(13.5);
         // Neo: 12; Falcon: 13.5
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
 
-        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 2;
+        public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 4;
         public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = //
-                kPhysicalMaxAngularSpeedRadiansPerSecond / 4 * 1.5;
+                kPhysicalMaxAngularSpeedRadiansPerSecond / 4;
         public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
         public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
     }

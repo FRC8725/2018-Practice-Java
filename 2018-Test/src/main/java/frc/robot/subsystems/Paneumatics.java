@@ -16,7 +16,7 @@ public class Paneumatics extends SubsystemBase {
         return INSTANCE;
     }
 
-    DoubleSolenoid leftForklift, rightForklift, climber;
+    DoubleSolenoid leftForklift, rightForklift;
     Compressor compressor;
     public Paneumatics() {
         leftForklift = new DoubleSolenoid(PneumaticsModuleType.CTREPCM , RobotMap.Pneumatics.leftForklift[0], RobotMap.Pneumatics.leftForklift[1]);
@@ -24,8 +24,6 @@ public class Paneumatics extends SubsystemBase {
         leftForklift.set(DoubleSolenoid.Value.kReverse);
         rightForklift.set(DoubleSolenoid.Value.kReverse);
         compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
-        climber = new DoubleSolenoid(PneumaticsModuleType.CTREPCM , RobotMap.Pneumatics.climber[0], RobotMap.Pneumatics.climber[1]);
-        climber.set(DoubleSolenoid.Value.kReverse);
     }
 
     @Override
@@ -36,10 +34,6 @@ public class Paneumatics extends SubsystemBase {
     public void releaseFork() {
         leftForklift.set(DoubleSolenoid.Value.kForward);
         rightForklift.set(DoubleSolenoid.Value.kForward);
-    }
-
-    public void releaseClimber() {
-        climber.set(DoubleSolenoid.Value.kForward);
     }
 }
 
