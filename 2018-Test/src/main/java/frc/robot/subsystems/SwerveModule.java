@@ -42,10 +42,10 @@ public class SwerveModule {
         absoluteEncoder.setPositionToAbsolute();
 
         driveMotor = new LazyTalonFX(driveMotorId, true);
-        configDriveMotor();
+        configDriveMotor(driveMotorReversed);
 
         turningMotor = new LazyTalonFX(turningMotorId, false);
-        configTurningMotor();
+        configTurningMotor(turningMotorReversed);
 
 //        driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
 //        turningMotor = new CANSparkMax(turningMotorId, MotorType.kBrushless);
@@ -61,13 +61,15 @@ public class SwerveModule {
         putDashboard();
     }
 
-    private void configDriveMotor() {
+    private void configDriveMotor(boolean reversed) {
         driveMotor.setNeutralMode(NeutralMode.Brake);
+        driveMotor.setInverted(reversed);
         driveMotor.gearRatio = ModuleConstants.kDriveMotorGearRatio;
     }
 
-    private void configTurningMotor() {
+    private void configTurningMotor(boolean reversed) {
         turningMotor.setNeutralMode(NeutralMode.Coast);
+        turningMotor.setInverted(reversed);
         turningMotor.config_kP(0, ModuleConstants.kPTurning);
         turningMotor.config_kI(0, ModuleConstants.kITurning);
         turningMotor.config_kD(0, ModuleConstants.kDTurning);

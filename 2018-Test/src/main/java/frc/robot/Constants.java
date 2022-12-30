@@ -45,11 +45,10 @@ public final class Constants {
         public static final double kWheelBase = 0.58;
         // Distance between front and back wheels
         public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-                new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
                 new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-                new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
-                new Translation2d(-kWheelBase / 2, kTrackWidth / 2));
-
+                new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+                new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
+                new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
 
         public static final boolean kFrontLeftTurningEncoderReversed = true;
@@ -69,9 +68,9 @@ public final class Constants {
         public static final boolean kFrontRightDriveAbsoluteEncoderReversed = false;
         public static final boolean kBackRightDriveAbsoluteEncoderReversed = false;
         
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetAngle = -4.08;
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetAngle = -59.68;
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetAngle = 134.736328125;
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetAngle = 0.53;
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetAngle = 300.58;
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetAngle = 212.78;
         public static final double kBackRightDriveAbsoluteEncoderOffsetAngle = 30.849;
 
         public static final double kPhysicalMaxSpeedMetersPerSecond = Units.feetToMeters(13.5);
