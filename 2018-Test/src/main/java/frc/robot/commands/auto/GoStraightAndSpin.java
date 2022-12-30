@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -38,10 +39,10 @@ public class GoStraightAndSpin extends SequentialCommandGroup {
                 .setKinematics(DriveConstants.kDriveKinematics);
 
         Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-                new Pose2d(0, 0, new Rotation2d(0)),
                 List.of(
+                        new Pose2d(0, 0, new Rotation2d(0)),
+                        new Pose2d(-2, 0, Rotation2d.fromDegrees(180))
                 ),
-                new Pose2d(-2, 0, Rotation2d.fromDegrees(0)),
                 trajectoryConfig
         );
 

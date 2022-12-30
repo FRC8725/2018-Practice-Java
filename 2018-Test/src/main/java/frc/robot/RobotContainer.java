@@ -33,7 +33,7 @@ public class RobotContainer {
                 m_swerveSubsystem,
                 () -> m_Joystick.get_LStickY(),
                 () -> -m_Joystick.get_LStickX(),
-                m_Joystick::get_RStickX,
+                () -> -m_Joystick.get_RStickX(),
                 () -> !m_Joystick.btn_A.getAsBoolean()));
          elevator.setDefaultCommand(new ElevatorWithJoystick(
                  elevator,
@@ -49,7 +49,7 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-       m_Joystick.btn_X.whenPressed(m_swerveSubsystem::zeroHeading);
+       m_Joystick.btn_X.whenPressed(() -> m_swerveSubsystem.zeroHeading());
        m_Joystick.btn_topR.whileHeld(() -> new RunGripper(gripper, false));
        m_Joystick.btn_triggerR.whileHeld(() -> new RunGripper(gripper, true));
        m_Joystick.btn_Y.whenPressed(() -> new RunGripperToPosition(gripper, 0));

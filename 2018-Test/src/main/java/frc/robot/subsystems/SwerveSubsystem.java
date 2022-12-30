@@ -17,8 +17,8 @@ public class SwerveSubsystem extends SubsystemBase {
     private final SwerveModule frontLeft = new SwerveModule(
             DriverPort.kFrontLeftDriveMotorPort,
             DriverPort.kFrontLeftTurningMotorPort,
-            DriveConstants.kFrontLeftDriveEncoderReversed,
-            DriveConstants.kFrontLeftTurningEncoderReversed,
+            DriveConstants.kFrontLeftDriveReversed,
+            DriveConstants.kFrontLeftTurningReversed,
             DriverPort.kFrontLeftDriveAbsoluteEncoderPort,
             DriveConstants.kFrontLeftDriveAbsoluteEncoderOffsetAngle,
             DriveConstants.kFrontLeftDriveAbsoluteEncoderReversed);
@@ -26,8 +26,8 @@ public class SwerveSubsystem extends SubsystemBase {
     private final SwerveModule frontRight = new SwerveModule(
             DriverPort.kFrontRightDriveMotorPort,
             DriverPort.kFrontRightTurningMotorPort,
-            DriveConstants.kFrontRightDriveEncoderReversed,
-            DriveConstants.kFrontRightTurningEncoderReversed,
+            DriveConstants.kFrontRightDriveReversed,
+            DriveConstants.kFrontRightTurningReversed,
             DriverPort.kFrontRightDriveAbsoluteEncoderPort,
             DriveConstants.kFrontRightDriveAbsoluteEncoderOffsetAngle,
             DriveConstants.kFrontRightDriveAbsoluteEncoderReversed);
@@ -35,8 +35,8 @@ public class SwerveSubsystem extends SubsystemBase {
     private final SwerveModule backLeft = new SwerveModule(
             DriverPort.kBackLeftDriveMotorPort,
             DriverPort.kBackLeftTurningMotorPort,
-            DriveConstants.kBackLeftDriveEncoderReversed,
-            DriveConstants.kBackLeftTurningEncoderReversed,
+            DriveConstants.kBackLeftDriveReversed,
+            DriveConstants.kBackLeftTurningReversed,
             DriverPort.kBackLeftDriveAbsoluteEncoderPort,
             DriveConstants.kBackLeftDriveAbsoluteEncoderOffsetAngle,
             DriveConstants.kBackLeftDriveAbsoluteEncoderReversed);
@@ -44,15 +44,14 @@ public class SwerveSubsystem extends SubsystemBase {
     private final SwerveModule backRight = new SwerveModule(
             DriverPort.kBackRightDriveMotorPort,
             DriverPort.kBackRightTurningMotorPort,
-            DriveConstants.kBackRightDriveEncoderReversed,
-            DriveConstants.kBackRightTurningEncoderReversed,
+            DriveConstants.kBackRightDriveReversed,
+            DriveConstants.kBackRightTurningReversed,
             DriverPort.kBackRightDriveAbsoluteEncoderPort,
             DriveConstants.kBackRightDriveAbsoluteEncoderOffsetAngle,
             DriveConstants.kBackRightDriveAbsoluteEncoderReversed);
 
     private final AHRS gyro = new AHRS(SPI.Port.kMXP);
-    private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics,
-            new Rotation2d(0));
+    private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, new Rotation2d(0));
     private final Field2d m_field = new Field2d();
 
     public SwerveSubsystem() {
@@ -70,7 +69,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public double getHeading() {
-        return Math.IEEEremainder(gyro.getAngle(), 360);
+        return Math.IEEEremainder(-gyro.getAngle(), 360);
     }
 
     public Rotation2d getRotation2d() {

@@ -25,8 +25,6 @@ public class SwerveModule {
 //    private final RelativeEncoder driveEncoder;
 //    private final RelativeEncoder turningEncoder;
 
-    private final PIDController turningPidController;
-
     private final CANCoder absoluteEncoder;
     private final boolean absoluteEncoderReversed;
     private final double absoluteEncoderOffsetAngle;
@@ -55,8 +53,8 @@ public class SwerveModule {
 
         // turning Motor configuration
 
-        turningPidController = new PIDController(ModuleConstants.kPTurning, ModuleConstants.kITurning, ModuleConstants.kDTurning);
-        turningPidController.enableContinuousInput(-180, 180);
+        // turningPidController = new PIDController(ModuleConstants.kPTurning, ModuleConstants.kITurning, ModuleConstants.kDTurning);
+        // turningPidController.enableContinuousInput(-180, 180);
         resetEncoders();
         putDashboard();
     }
@@ -113,7 +111,7 @@ public class SwerveModule {
         }
         state = SwerveModuleState.optimize(state, getState().angle);
         driveMotor.set(ControlMode.PercentOutput, state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
-        turningMotor.set(ControlMode.PercentOutput, turningPidController.calculate(getTurningPosition(), state.angle.getDegrees()));
+        turningMotor.setPositionAsDegrees(state.angle.getDegrees());
         SmartDashboard.putString("Swerve[" + absoluteEncoder.getDeviceID() + "] state", state.toString());
         putDashboard();
     }
@@ -130,7 +128,7 @@ public class SwerveModule {
             return;
         }
         // turningMotor.set(ControlMode.Position, 0);
-        turningMotor.set(ControlMode.PercentOutput, turningPidController.calculate(getTurningPosition(), 0));
+        turningMotor.setPositionAsDegrees(0);
         driveMotor.set(.0);
         putDashboard();
     }
