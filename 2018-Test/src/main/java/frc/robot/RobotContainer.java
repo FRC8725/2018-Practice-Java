@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.commands.*;
-import frc.robot.commands.auto.GoStraightAndSpin;
+import frc.robot.commands.auto.GoStraight;
 import frc.robot.commands.auto.GoZShape;
 import frc.robot.commands.auto.Slalom;
 import frc.robot.subsystems.Elevator;
@@ -42,7 +42,7 @@ public class RobotContainer {
         configureButtonBindings();
         autoCommand = new SendableChooser<>();
         autoCommand.addOption("Nothing", new InstantCommand(m_swerveSubsystem::stopModules));
-        autoCommand.addOption("GoStraightAndSpin", new GoStraightAndSpin(m_swerveSubsystem));
+        autoCommand.addOption("GoStraight", new GoStraight(m_swerveSubsystem));
         autoCommand.addOption("GoZShape", new GoZShape(m_swerveSubsystem));
         autoCommand.addOption("Slalom", new Slalom(m_swerveSubsystem));
         SmartDashboard.putData(autoCommand);
