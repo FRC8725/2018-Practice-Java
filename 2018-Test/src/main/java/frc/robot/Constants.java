@@ -56,19 +56,11 @@ public final class Constants {
         public static final boolean kFrontRightTurningReversed = true;
         public static final boolean kBackRightTurningReversed = true;
 
-<<<<<<< HEAD
         public static final boolean kFrontLeftDriveReversed = false;
         public static final boolean kBackLeftDriveReversed = false;
         // CAUTION : next line is only for neo, cause by the different diraction. (default should be false)
         public static final boolean kFrontRightDriveReversed = false;
         public static final boolean kBackRightDriveReversed = true;
-=======
-        public static final boolean kFrontLeftDriveEncoderReversed = false;
-        public static final boolean kBackLeftDriveEncoderReversed = false;
-        // CAUTION : next line is only for neo, cause by the different diraction. (default should be false)
-        public static final boolean kFrontRightDriveEncoderReversed = false;
-        public static final boolean kBackRightDriveEncoderReversed = true;
->>>>>>> bd527e442ac3d0dce1d3249e9c4206d2b286ed41
 
         public static final boolean kFrontLeftDriveAbsoluteEncoderReversed = false;
         public static final boolean kBackLeftDriveAbsoluteEncoderReversed = false;
