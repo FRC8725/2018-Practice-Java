@@ -107,9 +107,6 @@
         "trej": {
           "arrowSize": 29,
           "style": "Line"
-        },
-        "window": {
-          "visible": true
         }
       },
       "/SmartDashboard/SendableChooser[0]": {
@@ -121,6 +118,9 @@
   },
   "NetworkTables": {
     "SmartDashboard": {
+      "SendableChooser[0]": {
+        "open": true
+      },
       "open": true
     }
   }

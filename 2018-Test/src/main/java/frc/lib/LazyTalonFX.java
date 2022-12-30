@@ -1,5 +1,6 @@
 package frc.lib;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -25,5 +26,9 @@ public class LazyTalonFX extends WPI_TalonFX {
 
     public double getPositionAsDegrees() {
         return getSelectedSensorPosition() / (2048. / gearRatio) * 360.;
+    }
+
+    public void setPositionAsDegrees(double setpoint) {
+        set(ControlMode.Position, setpoint / 360.* (2048. / gearRatio));
     }
 }
