@@ -107,6 +107,9 @@
         "trej": {
           "arrowSize": 29,
           "style": "Line"
+        },
+        "window": {
+          "visible": true
         }
       },
       "/SmartDashboard/SendableChooser[0]": {

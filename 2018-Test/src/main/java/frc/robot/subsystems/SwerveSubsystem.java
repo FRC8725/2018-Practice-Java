@@ -112,10 +112,10 @@ public class SwerveSubsystem extends SubsystemBase {
         backRight.setDesiredState(desiredStates[3]);
     }
 
-    public void resetTurningmotor () {
-        frontLeft.ResetTurningMotor();
-        frontRight.ResetTurningMotor();
-        backLeft.ResetTurningMotor();
-        backRight.ResetTurningMotor();
+    public void resetTurningMotor() {
+        frontLeft.stop();
+        frontRight.stop();
+        backLeft.stop();
+        backRight.stop();
     }
 }

@@ -20,9 +20,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 public final class Constants {
 
     public static final class Joystick {
-        public static final int kDriverControllerPort = 0;
 
-        public static final double kDeadband = 0.05;
+        public static final double kDeadband = 0.3;
     }
 
     public static final class ModuleConstants {
@@ -33,6 +32,7 @@ public final class Constants {
         public static final double kTurningEncoderRot2Rad = kTurningMotorGearRatio * 2 * Math.PI;
         public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
         public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
+        public static final double kWheelCircumference = kWheelDiameterMeters * 2 * Math.PI;
         public static final double kPTurning = .1;
         public static final double kITurning = 0;
         public static final double kDTurning = 0;
@@ -56,21 +56,21 @@ public final class Constants {
         public static final boolean kFrontRightTurningReversed = true;
         public static final boolean kBackRightTurningReversed = true;
 
-        public static final boolean kFrontLeftDriveReversed = false;
-        public static final boolean kBackLeftDriveReversed = false;
+        public static final boolean kFrontLeftDriveReversed = true;
+        public static final boolean kBackLeftDriveReversed = true;
         // CAUTION : next line is only for neo, cause by the different diraction. (default should be false)
         public static final boolean kFrontRightDriveReversed = false;
-        public static final boolean kBackRightDriveReversed = true;
+        public static final boolean kBackRightDriveReversed = false;
 
-        public static final boolean kFrontLeftDriveAbsoluteEncoderReversed = false;
-        public static final boolean kBackLeftDriveAbsoluteEncoderReversed = false;
-        public static final boolean kFrontRightDriveAbsoluteEncoderReversed = false;
-        public static final boolean kBackRightDriveAbsoluteEncoderReversed = false;
+        public static final boolean kFrontLeftDriveAbsoluteEncoderReversed = true;
+        public static final boolean kBackLeftDriveAbsoluteEncoderReversed = true;
+        public static final boolean kFrontRightDriveAbsoluteEncoderReversed = true;
+        public static final boolean kBackRightDriveAbsoluteEncoderReversed = true;
         
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetAngle = 1.7578125;
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetAngle = 133.41796875;
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetAngle = 302.255859375;
-        public static final double kBackRightDriveAbsoluteEncoderOffsetAngle = 215.5078125;
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetAngle = -174.814453125;
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetAngle = 133.2421875;
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetAngle = 124.01;
+        public static final double kBackRightDriveAbsoluteEncoderOffsetAngle = 31.99;
 
         public static final double kPhysicalMaxSpeedMetersPerSecond = Units.feetToMeters(13.5);
         // Neo: 12; Falcon: 13.5
@@ -89,9 +89,9 @@ public final class Constants {
                 DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 10;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 4;
-        public static final double kPXController = 1.5;
-        public static final double kPYController = 1.5;
-        public static final double kPThetaController = 0.02;
+        public static final double kPXController = 0.05;
+        public static final double kPYController = 0.05;
+        public static final double kPThetaController = 0.4;
 
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = //
                 new TrapezoidProfile.Constraints(
