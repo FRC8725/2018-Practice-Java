@@ -60,6 +60,7 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         SmartDashboard.putData(m_field);
+        m_swerveSubsystem.resetEncoders();
         return autoCommand.getSelected();
     }
 }
