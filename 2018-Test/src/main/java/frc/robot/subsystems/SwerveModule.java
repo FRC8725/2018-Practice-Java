@@ -4,11 +4,14 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
+import com.ctre.phoenix.sensors.SensorTimeBase;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
@@ -29,25 +32,33 @@ public class SwerveModule {
     private PIDController turningPIDController;
 
     private final CANCoder absoluteEncoder;
+    private final CANCoderConfiguration absoluteEncoderConfiguration;
+
     private final boolean absoluteEncoderReversed;
     private final double absoluteEncoderOffsetAngle;
 
+    private final double driveGearRatio = ModuleConstants.kDriveMotorGearRatio;
+    private final double turningGearRatio = ModuleConstants.kTurningMotorGearRatio;
+
     public SwerveModule(int driveMotorId, int turningMotorId, boolean driveMotorReversed, boolean turningMotorReversed,
             int absoluteEncoderId, double absoluteEncoderOffset, boolean absoluteEncoderReversed) {
-
+        
         this.absoluteEncoderOffsetAngle = absoluteEncoderOffset;
         this.absoluteEncoderReversed = absoluteEncoderReversed;
         absoluteEncoder = new CANCoder(absoluteEncoderId);
-
+        absoluteEncoderConfiguration = new CANCoderConfiguration();
+        
+        absoluteEncoderConfiguration.sensorTimeBase = SensorTimeBase.Per100Ms_Legacy;
+        absoluteEncoderConfiguration.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
+        absoluteEncoderConfiguration.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
         absoluteEncoder.configFactoryDefault();
-        absoluteEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
-        absoluteEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
+        absoluteEncoder.configAllSettings(absoluteEncoderConfiguration);
         absoluteEncoder.setPositionToAbsolute();
 
-        driveMotor = new LazyTalonFX(driveMotorId, true);
+        driveMotor = new LazyTalonFX(driveMotorId, driveGearRatio);
         configDriveMotor(driveMotorReversed);
 
-        turningMotor = new LazyTalonFX(turningMotorId, false);
+        turningMotor = new LazyTalonFX(turningMotorId, turningGearRatio);
         configTurningMotor(turningMotorReversed);
 
 //        driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
@@ -65,15 +76,17 @@ public class SwerveModule {
     }
 
     private void configDriveMotor(boolean reversed) {
+        driveMotor.configFactoryDefault();
+        driveMotor.setCurrent(true);
         driveMotor.setNeutralMode(NeutralMode.Brake);
         driveMotor.setInverted(reversed);
-        driveMotor.gearRatio = ModuleConstants.kDriveMotorGearRatio;
     }
 
     private void configTurningMotor(boolean reversed) {
+        turningMotor.configFactoryDefault();
+        turningMotor.setCurrent(false);
         turningMotor.setNeutralMode(NeutralMode.Brake);
         turningMotor.setInverted(reversed);
-        turningMotor.gearRatio = ModuleConstants.kTurningMotorGearRatio;
     }
     public double getDrivePosition() {
         return driveMotor.getPositionAsRad();
@@ -92,8 +105,9 @@ public class SwerveModule {
     }
 
     public double getAbsoluteEncoderRad() {
-        double angle = (absoluteEncoder.getAbsolutePosition() - absoluteEncoderOffsetAngle) / 360.;
+        double angle = absoluteEncoder.getAbsolutePosition() / 360.;
         angle *= 2.0 * Math.PI;
+        angle -= absoluteEncoderOffsetAngle / 180 * Math.PI;
         return angle * (absoluteEncoderReversed ? -1.0 : 1.0);
     }
 
@@ -122,7 +136,7 @@ public class SwerveModule {
 
 
     public void stop() {
-        driveMotor.set(0);
+    driveMotor.set(ControlMode.PercentOutput, 0);
 
         switch (turningMotor.getDeviceID()) {
             case (RobotMap.DriverPort.kFrontLeftTurningMotorPort):

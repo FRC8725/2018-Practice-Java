@@ -33,7 +33,7 @@ public final class Constants {
         public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
         public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
         public static final double kWheelCircumference = kWheelDiameterMeters * 2 * Math.PI;
-        public static final double kPTurning = .1;
+        public static final double kPTurning = .4;
         public static final double kITurning = 0;
         public static final double kDTurning = 0;
     }
@@ -67,7 +67,7 @@ public final class Constants {
         public static final boolean kFrontRightDriveAbsoluteEncoderReversed = true;
         public static final boolean kBackRightDriveAbsoluteEncoderReversed = true;
         
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetAngle = -174.814453125;
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetAngle = 2.1;
         public static final double kFrontRightDriveAbsoluteEncoderOffsetAngle = 133.2421875;
         public static final double kBackLeftDriveAbsoluteEncoderOffsetAngle = 124.01;
         public static final double kBackRightDriveAbsoluteEncoderOffsetAngle = 31.99;
@@ -89,8 +89,8 @@ public final class Constants {
                 DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 10;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 4;
-        public static final double kPXController = 0.05;
-        public static final double kPYController = 0.05;
+        public static final double kPXController = 0.03;
+        public static final double kPYController = 0.03;
         public static final double kPThetaController = 0.4;
 
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = //

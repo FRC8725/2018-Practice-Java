@@ -33,6 +33,7 @@ public class SwerveJoystickCmd extends CommandBase {
 
     @Override
     public void initialize() {
+        this.swerveSubsystem.resetEncoders();
     }
 
     @Override
@@ -47,10 +48,10 @@ public class SwerveJoystickCmd extends CommandBase {
         ySpeed = Math.abs(ySpeed) > Constants.Joystick.kDeadband ? ySpeed : 0.0;
         turningSpeed = Math.abs(turningSpeed) > Constants.Joystick.kDeadband ? turningSpeed : 0.0;
 
-        if (xSpeed == 0 && ySpeed == 0 && turningSpeed == 0) {
-           this.swerveSubsystem.resetTurningMotor();
-           return;
-        }
+//        if (xSpeed == 0 && ySpeed == 0 && turningSpeed == 0) {
+//           this.swerveSubsystem.stopModules();
+//           return;
+//        }
 
         // 3. Make the driving smoother
         xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;

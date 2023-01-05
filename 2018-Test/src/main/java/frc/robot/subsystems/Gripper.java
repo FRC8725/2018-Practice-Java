@@ -26,9 +26,9 @@ public class Gripper extends SubsystemBase {
     public static Gripper getInstance() {return INSTANCE;}
 
     private Gripper() {
-        leftSpinMotor = new LazyTalonFX(RobotMap.Gripper.leftSpinMotor, false);
+        leftSpinMotor = new LazyTalonFX(RobotMap.Gripper.leftSpinMotor, 1);
         configSpinMotor(leftSpinMotor, true);
-        rightSpinMotor = new LazyTalonFX(RobotMap.Gripper.rightSpinMotor, false);
+        rightSpinMotor = new LazyTalonFX(RobotMap.Gripper.rightSpinMotor, 1);
         configSpinMotor(rightSpinMotor, false);
         SpinMotorGroup = new MotorControllerGroup(leftSpinMotor, rightSpinMotor);
         angleMotor = new LazySparkMax(RobotMap.Gripper.angleMotor, CANSparkMaxLowLevel.MotorType.kBrushless);

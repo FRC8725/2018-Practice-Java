@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -14,6 +15,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.RobotMap.DriverPort;
 
 public class SwerveSubsystem extends SubsystemBase {
+
     private final SwerveModule frontLeft = new SwerveModule(
             DriverPort.kFrontLeftDriveMotorPort,
             DriverPort.kFrontLeftTurningMotorPort,
@@ -22,7 +24,7 @@ public class SwerveSubsystem extends SubsystemBase {
             DriverPort.kFrontLeftDriveAbsoluteEncoderPort,
             DriveConstants.kFrontLeftDriveAbsoluteEncoderOffsetAngle,
             DriveConstants.kFrontLeftDriveAbsoluteEncoderReversed);
-
+        
     private final SwerveModule frontRight = new SwerveModule(
             DriverPort.kFrontRightDriveMotorPort,
             DriverPort.kFrontRightTurningMotorPort,
@@ -59,6 +61,7 @@ public class SwerveSubsystem extends SubsystemBase {
             try {
                 Thread.sleep(1000);
                 zeroHeading();
+                resetEncoders();
             } catch (Exception e) {
             }
         }).start();
@@ -104,18 +107,18 @@ public class SwerveSubsystem extends SubsystemBase {
         backRight.stop();
     }
 
+    public void resetEncoders() {
+        frontLeft.resetEncoders();
+        frontRight.resetEncoders();
+        backLeft.resetEncoders();
+        backRight.resetEncoders();
+    }
+
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
         frontLeft.setDesiredState(desiredStates[0]);
         frontRight.setDesiredState(desiredStates[1]);
         backLeft.setDesiredState(desiredStates[2]);
         backRight.setDesiredState(desiredStates[3]);
-    }
-
-    public void resetTurningMotor() {
-        frontLeft.stop();
-        frontRight.stop();
-        backLeft.stop();
-        backRight.stop();
     }
 }

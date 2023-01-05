@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,6 +30,7 @@ public class RobotContainer {
 
 
     public RobotContainer() {
+        Timer.delay(.2);
         m_swerveSubsystem.setDefaultCommand(new SwerveJoystickCmd(
                 m_swerveSubsystem,
                 () -> m_Joystick.get_LStickY(),
@@ -60,6 +62,7 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         SmartDashboard.putData(m_field);
+        m_swerveSubsystem.resetEncoders();
         return autoCommand.getSelected();
     }
 }

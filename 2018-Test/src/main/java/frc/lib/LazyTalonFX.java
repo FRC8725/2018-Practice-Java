@@ -10,10 +10,17 @@ import frc.robot.Constants;
 
 
 public class LazyTalonFX extends WPI_TalonFX {
-    public double gearRatio = 0;
-    public LazyTalonFX(int deviceNumber, boolean isHighCurrent) {
+
+    private double gearRatio = 1;
+    public LazyTalonFX(int deviceNumber, double gearRatio) {
         super(deviceNumber);
-//         if the motor is for chassis, won't set the current limit.
+    //         if the motor is for chassis, won't set the current limit.
+        setCurrent(false);
+        this.gearRatio = gearRatio;
+    }
+
+
+    public void setCurrent(boolean isHighCurrent) {
          if (isHighCurrent){
              configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 10, 0.5));
              configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 48, 20, 1));
