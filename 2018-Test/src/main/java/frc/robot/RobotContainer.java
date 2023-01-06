@@ -30,7 +30,6 @@ public class RobotContainer {
 
 
     public RobotContainer() {
-        Timer.delay(.2);
         m_swerveSubsystem.setDefaultCommand(new SwerveJoystickCmd(
                 m_swerveSubsystem,
                 () -> m_Joystick.get_LStickY(),

@@ -33,7 +33,7 @@ public class SwerveJoystickCmd extends CommandBase {
 
     @Override
     public void initialize() {
-        this.swerveSubsystem.resetEncoders();
+        swerveSubsystem.resetEncoders();
     }
 
     @Override
