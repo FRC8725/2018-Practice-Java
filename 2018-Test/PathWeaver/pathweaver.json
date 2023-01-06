@@ -1,9 +1,9 @@
 {
   "lengthUnit": "Meter",
   "exportUnit": "Always Meters",
-  "maxVelocity": 0.9144,
+  "maxVelocity": 4.11,
   "maxAcceleration": 3.0,
-  "trackWidth": 2.0,
+  "trackWidth": 5.0,
   "gameName": "Slalom Path",
   "outputDir": ""
 }
